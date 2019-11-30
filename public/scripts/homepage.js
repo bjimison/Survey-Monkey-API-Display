@@ -31,8 +31,11 @@ const displaySurvey = response => {
         console.log("******* answers:", survey.answers[0]);
         console.log("******* question id:", question_id);
         console.log("responseObject:", responseObject);
-        $("#results").append(`<div>${answer}</div>`);
     }
+    Object.keys(responseObject).map(function (key) {
+        let answer = responseObject[key];
+        $("#results").append(`<li>Question ID: ${key}, Answer: ${answer}</li>`)
+    })
 }
 
 // ********** Listen for search submit **********
