@@ -1,8 +1,8 @@
 const authToken = "bearer 7zF8BOnG4G7RzWhxfQxo2YjP7B-O0myhv7uUtPX8DL9gNqXvZvY.YfjdXqHQODdWf11OQQl6WPmRbeerKXG6Jwh0SMpOUsuVFMliRcw2GeifUQAwfGCdOu.Qp1F9-QFC";
 const getSurveyResponsesURL = 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk'
 
-// ********** returned responses **********
-let returnedResponses = [];
+// ***** response object containing "question_id" as the key, and "answer" as the value *****
+let responseObject = {};
 
 // ********** Handle errors **********
 const displayError = (err1, err2, err3) => {
@@ -11,21 +11,26 @@ const displayError = (err1, err2, err3) => {
     console.log(err3);
 };
 
-// ********** Used for searching **********
+// ********** search response object for question_id and answer values **********
 const displaySurvey = response => {
-    let surveyArr = response.data[0].pages[0].questions;;
+    let surveyArr = response.data[0].pages[0].questions;
     console.log("response from displaySurvey:", surveyArr);
 
     for (let i = 0; i < surveyArr.length; i++) {
         let survey = surveyArr[i];
+        let question_id = surveyArr[i].id;
         let answer = survey.answers[0].text;
         if (survey.answers[0].hasOwnProperty('choice_id')) {
             answer = survey.answers[0].choice_id;
         } else {
             answer = survey.answers[0].text;
         }
+        // now that question id and answer have been established, set them as key:value pairs in responseObject
+        responseObject[question_id] = answer;
 
-        console.log("********************************** answers:", survey.answers[0]);
+        console.log("******* answers:", survey.answers[0]);
+        console.log("******* question id:", question_id);
+        console.log("responseObject:", responseObject);
         $("#results").append(`<div>${answer}</div>`);
     }
 }
