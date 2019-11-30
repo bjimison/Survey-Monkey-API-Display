@@ -1,0 +1,25 @@
+{
+  "name": "survey-monkey",
+  "version": "1.0.0",
+  "description": "survey monkey API call",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjimison/Survey-Monkey-API-Display.git"
+  },
+  "author": "Brady",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjimison/Survey-Monkey-API-Display/issues"
+  },
+  "homepage": "https://github.com/bjimison/Survey-Monkey-API-Display#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.13",
+    "nodemon": "^2.0.1"
+  }
+}
