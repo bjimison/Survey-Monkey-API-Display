@@ -18,6 +18,7 @@ const displaySurvey = response => {
     console.log("response from displaySurvey:", surveyArr);
 
     for (let i = 0; i < surveyArr.length; i++) {
+
         let survey = surveyArr[i];
         let question_id = surveyArr[i].id;
         let answer = survey.answers[0].text;
@@ -35,7 +36,7 @@ const displaySurvey = response => {
     }
     Object.keys(responseObject).map(function (key) {
         let answer = responseObject[key];
-        $("#results").append(`<li>Question ID: ${key}, Answer: ${answer}</li>`)
+        $("#results").append(`<li id="question">Question ID: ${key}</li> <li>Answer: ${answer}</li>`)
     })
 }
 
@@ -70,9 +71,9 @@ $("#fetch-button").on("click", function (e) {
 $("#save-button").on("click", function (e) {
     e.preventDefault();
     $.ajax({
-        method: "POST",
-        // url: "/api/survey/add",
-        data: responseObject,
+        method: "GET",
+        url: "/api/survey/add",
+        // data: responseObject,
         success: createModel,
         error: displayError
     });
