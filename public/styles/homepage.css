@@ -29,6 +29,11 @@
     border-radius: 4px;
 }
 
-#button-holder {
+.button-holder {
     text-align: center;
+}
+
+#save-button {
+    border: 2px solid rgb(4, 198, 4);
+    border-radius: 4px;
 }
