@@ -1,6 +1,9 @@
 const authToken = "bearer 7zF8BOnG4G7RzWhxfQxo2YjP7B-O0myhv7uUtPX8DL9gNqXvZvY.YfjdXqHQODdWf11OQQl6WPmRbeerKXG6Jwh0SMpOUsuVFMliRcw2GeifUQAwfGCdOu.Qp1F9-QFC";
+const baseURL = "https://api.surveymonkey.com/v3/surveys"
 const getSurveyResponsesURL = 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk'
-const surveyId = "272379092";
+// let getSurveyDetailsURL = `https://api.surveymonkey.com/v3/surveys/${surveyId}/details`;
+let surveyIds = [];
+
 
 // ***** response object containing "question_id" as the key, and "answer" as the value *****
 let responseObject = {};
@@ -11,6 +14,31 @@ const displayError = (err1, err2, err3) => {
     console.log(err2);
     console.log(err3);
 };
+
+// call API with bearer Token to retrieve associated Survey ID's
+const getSurveyIds = response => {
+    // console.log("calling for Survey ID's", response);
+    let survResponse = response.data;
+    for (let i = 0; i < survResponse.length; i++) {
+        let survey = survResponse[i].id;
+        if (!surveyIds.includes(survey)) {
+            surveyIds.push(survey);
+            $("#id-list").append(`<li class="surveyId">Survey ID: ${surveyIds[i]}</li>`)
+        } else {
+            continue;
+        }
+    }
+    // surveyIds.forEach(survey => {
+    //     $("#id-list").append(`<li class="surveyId">Survey ID: ${survey}</li>`)
+    // })
+    // surveyIds.push(response.data[0].id, response.data[1].id);
+    // surveyIds.forEach(survey => {
+    //     if (!surveyIds.includes(survey)) {
+    //         $("#id-list").append(`<li class="surveyId">Survey ID: ${survey}</li>`)
+    //     }
+    // })
+    console.log("SurveyIds:", surveyIds);
+}
 
 // ********** search response object for question_id and answer values **********
 const displaySurvey = response => {
@@ -29,9 +57,6 @@ const displaySurvey = response => {
         }
         // now that question id and answer have been established, set them as key:value pairs in responseObject
         responseObject[question_id] = answer;
-
-        console.log("******* answers:", survey.answers[0]);
-        console.log("******* question id:", question_id);
         console.log("responseObject:", responseObject);
     }
     Object.keys(responseObject).map(function (key) {
@@ -46,8 +71,8 @@ const createModel = response => {
     $.ajax({
         method: "POST",
         url: "/api/survey/add",
-        headers: { 'Authorization': authToken, "Access-Control-Allow-Origin": "GET, POST, PUT" },
-        data: responseObject,
+        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
+        data: { Survey: responseObject },
         success: function () {
             console.log("Created the model!");
         },
@@ -55,13 +80,26 @@ const createModel = response => {
     });
 };
 
+// ********** Listen for get Survey ID click **********
+$("#fetch-id-button").on("click", function (e) {
+    e.preventDefault();
+    let url = baseURL;
+    $.ajax({
+        method: "GET",
+        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
+        url: url,
+        success: getSurveyIds,
+        error: displayError
+    });
+});
+
 // ********** Listen for search submit **********
 $("#fetch-button").on("click", function (e) {
     e.preventDefault();
     let url = getSurveyResponsesURL;
     $.ajax({
         method: "GET",
-        headers: { 'Authorization': authToken },
+        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
         url: url,
         success: displaySurvey,
         error: displayError
