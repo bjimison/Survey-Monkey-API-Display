@@ -1,7 +1,7 @@
 const authToken = "bearer 7zF8BOnG4G7RzWhxfQxo2YjP7B-O0myhv7uUtPX8DL9gNqXvZvY.YfjdXqHQODdWf11OQQl6WPmRbeerKXG6Jwh0SMpOUsuVFMliRcw2GeifUQAwfGCdOu.Qp1F9-QFC";
 const baseURL = "https://api.surveymonkey.com/v3/surveys"
-const getSurveyResponsesURL = 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk'
-// let getSurveyDetailsURL = `https://api.surveymonkey.com/v3/surveys/${surveyId}/details`;
+const getSurveyResponsesURL = "https://api.surveymonkey.com/v3/surveys/"
+// const getSurveyResponsesURL = 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk'
 let surveyIds = [];
 
 
@@ -23,8 +23,8 @@ const getSurveyIds = response => {
         let survey = survResponse[i].id;
         if (!surveyIds.includes(survey)) {
             surveyIds.push(survey);
-            $("#id-list").append(`<li class="surveyId">Survey ID: ${surveyIds[i]}</li>`)
-        } else {
+            $("#id-list").append(`<li class="surveyId">Survey ID: ${survey}</li>`)
+        } else if (surveyIds.includes(survey)) {
             continue;
         }
     }
@@ -39,6 +39,19 @@ const getSurveyIds = response => {
     // })
     console.log("SurveyIds:", surveyIds);
 }
+
+// ********** Listen for get Survey ID click **********
+$("#fetch-id-button").on("click", function (e) {
+    e.preventDefault();
+    let url = baseURL;
+    $.ajax({
+        method: "GET",
+        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
+        url: url,
+        success: getSurveyIds,
+        error: displayError
+    });
+});
 
 // ********** search response object for question_id and answer values **********
 const displaySurvey = response => {
@@ -80,31 +93,22 @@ const createModel = response => {
     });
 };
 
-// ********** Listen for get Survey ID click **********
-$("#fetch-id-button").on("click", function (e) {
-    e.preventDefault();
-    let url = baseURL;
-    $.ajax({
-        method: "GET",
-        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
-        url: url,
-        success: getSurveyIds,
-        error: displayError
-    });
-});
-
 // ********** Listen for search submit **********
 $("#fetch-button").on("click", function (e) {
     e.preventDefault();
-    let url = getSurveyResponsesURL;
-    $.ajax({
-        method: "GET",
-        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
-        url: url,
-        success: displaySurvey,
-        error: displayError
-    });
-    console.log("response Object", responseObject)
+    for (let i = 0; i < surveyIds.length; i++) {
+        let currentId = surveyIds[i];
+        let url = getSurveyResponsesURL + currentId + "/responses/bulk"
+        console.log("STRING TEMPLATE URL:", url);
+        $.ajax({
+            method: "GET",
+            headers: { 'Authorization': authToken, 'content-type': 'application/json' },
+            url: url,
+            success: displaySurvey,
+            error: displayError
+        });
+        console.log("response Object", responseObject)
+    }
 });
 
 // ********** Listen for save click **********
