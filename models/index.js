@@ -10,9 +10,10 @@ mongoose.connect(
     { useNewUrlParser: true },
 );
 
+// this function resolves an 'Unhandled Promise Rejection' error that was stopping this database from
+// successfully working with the server
 async function main() {
     const client = new MongoClient(url, { newUrlParser: true });
-
     try {
         await client.connect();
         console.log('connected!');

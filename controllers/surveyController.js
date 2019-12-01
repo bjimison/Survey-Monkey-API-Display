@@ -1,18 +1,18 @@
 let db = require("../models");
 
-// PUT /api/user/add
+// POST /api/user/add
 
 const addSurvey = (req, res) => {
-    db.Survey.create(req.body);
-    newSurvey.save((err, survey) => {
+    let newSurvey = req.body;
+    db.Survey.create(newSurvey, (err, createdSurvey) => {
+        console.log("created Survey", createdSurvey);
         if (err) {
             console.log(err);
             return err;
+        } else {
+            res.json(createdSurvey);
         }
-        survey.save();
-        console.log("Saved ", survey);
-    });
-    res.json(survey);
+    })
 }
 
 module.exports = {

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let SurveySchema = new Schema({
-    question_id: String
+    Survey: Object
 });
 
 let Survey = mongoose.model("Survey", SurveySchema);

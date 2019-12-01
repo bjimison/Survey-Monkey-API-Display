@@ -46,6 +46,7 @@ const createModel = response => {
     $.ajax({
         method: "POST",
         url: "/api/survey/add",
+        headers: { 'Authorization': authToken, "Access-Control-Allow-Origin": "GET, POST, PUT" },
         data: responseObject,
         success: function () {
             console.log("Created the model!");
@@ -65,6 +66,7 @@ $("#fetch-button").on("click", function (e) {
         success: displaySurvey,
         error: displayError
     });
+    console.log("response Object", responseObject)
 });
 
 // ********** Listen for save click **********
@@ -72,7 +74,8 @@ $("#save-button").on("click", function (e) {
     e.preventDefault();
     $.ajax({
         method: "GET",
-        url: "/api/survey/add",
+        url: 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk',
+        headers: { 'Authorization': authToken },
         // data: responseObject,
         success: createModel,
         error: displayError
