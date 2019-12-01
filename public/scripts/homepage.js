@@ -1,5 +1,6 @@
 const authToken = "bearer 7zF8BOnG4G7RzWhxfQxo2YjP7B-O0myhv7uUtPX8DL9gNqXvZvY.YfjdXqHQODdWf11OQQl6WPmRbeerKXG6Jwh0SMpOUsuVFMliRcw2GeifUQAwfGCdOu.Qp1F9-QFC";
 const getSurveyResponsesURL = 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk'
+const surveyId = "272379092";
 
 // ***** response object containing "question_id" as the key, and "answer" as the value *****
 let responseObject = {};
@@ -38,8 +39,22 @@ const displaySurvey = response => {
     })
 }
 
+// ********** Create database model **********
+const createModel = response => {
+    console.log("Attempting to create model", response);
+    $.ajax({
+        method: "POST",
+        url: "/api/survey/add",
+        data: responseObject,
+        success: function () {
+            console.log("Created the model!");
+        },
+        error: displayError
+    });
+};
+
 // ********** Listen for search submit **********
-$("#fetch").on("click", function (e) {
+$("#fetch-button").on("click", function (e) {
     e.preventDefault();
     let url = getSurveyResponsesURL;
     $.ajax({
@@ -47,6 +62,18 @@ $("#fetch").on("click", function (e) {
         headers: { 'Authorization': authToken },
         url: url,
         success: displaySurvey,
+        error: displayError
+    });
+});
+
+// ********** Listen for save click **********
+$("#save-button").on("click", function (e) {
+    e.preventDefault();
+    $.ajax({
+        method: "POST",
+        // url: "/api/survey/add",
+        data: responseObject,
+        success: createModel,
         error: displayError
     });
 });
