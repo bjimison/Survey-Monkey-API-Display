@@ -25,7 +25,13 @@
     </ul>
 
     <div class="button-holder">
-        <button id="save-button">Save Results to Database</button>
+        <button id="save-button" onclick="maintenanceAlert()">Save Results to Database</button>
+
+        <script>
+            function maintenanceAlert() {
+                alert("The save button is currently undergoing maintenance, thank you!");
+            }
+        </script>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script> -->

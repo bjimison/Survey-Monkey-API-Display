@@ -59,7 +59,6 @@ const displaySurvey = response => {
     console.log("response from displaySurvey:", surveyArr);
 
     for (let i = 0; i < surveyArr.length; i++) {
-
         let survey = surveyArr[i];
         let question_id = surveyArr[i].id;
         let answer = survey.answers[0].text;
@@ -70,12 +69,13 @@ const displaySurvey = response => {
         }
         // now that question id and answer have been established, set them as key:value pairs in responseObject
         responseObject[question_id] = answer;
-        console.log("responseObject:", responseObject);
+        $("#results").append(`<li id="question">Question ID: ${question_id}</li> <li>Answer: ${answer}</li>`)
+        console.log("responseObject:", responseObject, "surveyIds.length:**", surveyIds.length);
     }
-    Object.keys(responseObject).map(function (key) {
-        let answer = responseObject[key];
-        $("#results").append(`<li id="question">Question ID: ${key}</li> <li>Answer: ${answer}</li>`)
-    })
+    // Object.keys(responseObject).map(function (key) {
+    //     let answer = responseObject[key];
+    //     $("#results").append(`<li id="question">Question ID: ${key}</li> <li>Answer: ${answer}</li>`)
+    // })
 }
 
 // ********** Create database model **********
@@ -112,14 +112,18 @@ $("#fetch-button").on("click", function (e) {
 });
 
 // ********** Listen for save click **********
-$("#save-button").on("click", function (e) {
-    e.preventDefault();
-    $.ajax({
-        method: "GET",
-        url: 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk',
-        headers: { 'Authorization': authToken },
-        // data: responseObject,
-        success: createModel,
-        error: displayError
-    });
-});
+// $("#save-button").on("click", function (e) {
+//     e.preventDefault();
+//     $.ajax({
+//         method: "GET",
+//         url: 'https://api.surveymonkey.com/v3/surveys/272379092/responses/bulk',
+//         headers: { 'Authorization': authToken },
+//         // data: responseObject,
+//         success: createModel,
+//         error: displayError
+//     });
+// });
+
+function maintenanceAlert() {
+    alert("The save button is currently undergoing maintenance, thank you!");
+}
