@@ -2,7 +2,6 @@ const authToken = "bearer 7zF8BOnG4G7RzWhxfQxo2YjP7B-O0myhv7uUtPX8DL9gNqXvZvY.Yf
 const baseURL = "https://api.surveymonkey.com/v3/surveys"
 const getSurveyResponsesURL = "https://api.surveymonkey.com/v3/surveys/"
 let surveyIds = [];
-let clickCounter = 0;
 
 // ***** response object containing "question_id" as the key, and "answer" as the value *****
 let responseObject = {};
@@ -52,7 +51,7 @@ $("#fetch-id-button").on("click", function (e) {
     });
 });
 
-// ********** search response object for question_id and answer values **********
+// ********** use response object with question_id and answer values to set HTML elements **********
 const displaySurvey = response => {
     let surveyArr = response.data[0].pages[0].questions;
     console.log("response from displaySurvey:", surveyArr);
@@ -70,11 +69,6 @@ const displaySurvey = response => {
         $("#results").append(`<li id="question">Question ID: ${question_id}</li> <li>Answer: ${answer}</li>`)
         console.log("responseObject:", responseObject, "surveyIds.length:**", surveyIds.length);
     }
-
-    // Object.keys(responseObject).map(function (key) {
-    //     let answer = responseObject[key];
-    //     $("#results").append(`<li id="question">Question ID: ${key}</li> <li>Answer: ${answer}</li>`)
-    // })
 }
 
 // ********** Create database model **********

@@ -1,7 +1,6 @@
 const MongoClient = require('mongodb', { useUnifiedTopology: true }).MongoClient;
 const url = "mongodb://localhost:27017/survey";
 
-
 // **************************************************************
 
 const mongoose = require("mongoose");

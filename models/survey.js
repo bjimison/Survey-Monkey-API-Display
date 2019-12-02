@@ -1,3 +1,5 @@
+// create the MongoDB schema for Survey entries
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
