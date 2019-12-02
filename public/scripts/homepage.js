@@ -26,15 +26,6 @@ const getSurveyIds = response => {
             continue;
         }
     }
-    // surveyIds.forEach(survey => {
-    //     $("#id-list").append(`<li class="surveyId">Survey ID: ${survey}</li>`)
-    // })
-    // surveyIds.push(response.data[0].id, response.data[1].id);
-    // surveyIds.forEach(survey => {
-    //     if (!surveyIds.includes(survey)) {
-    //         $("#id-list").append(`<li class="surveyId">Survey ID: ${survey}</li>`)
-    //     }
-    // })
     console.log("SurveyIds:", surveyIds);
 }
 
@@ -44,7 +35,7 @@ $("#fetch-id-button").on("click", function (e) {
     let url = baseURL;
     $.ajax({
         method: "GET",
-        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
+        headers: { 'Authorization': authToken },
         url: url,
         success: getSurveyIds,
         error: displayError
@@ -77,7 +68,7 @@ const createModel = response => {
     $.ajax({
         method: "POST",
         url: "/api/survey/add",
-        headers: { 'Authorization': authToken, 'content-type': 'application/json' },
+        headers: { 'Authorization': authToken },
         data: { Survey: responseObject },
         success: function () {
             console.log("Created the model!");
@@ -95,7 +86,7 @@ $("#fetch-button").on("click", function (e) {
         console.log("STRING TEMPLATE URL:", url);
         $.ajax({
             method: "GET",
-            headers: { 'Authorization': authToken, 'content-type': 'application/json' },
+            headers: { 'Authorization': authToken },
             url: url,
             success: displaySurvey,
             error: displayError
@@ -103,6 +94,9 @@ $("#fetch-button").on("click", function (e) {
         console.log("response Object", responseObject)
     }
 });
+
+// This function is triggering a 405 METHOD NOT ALLOWED error message, so it is currently commented out.
+// However, I wanted to demonstrate my thought process by leaving it here.
 
 // ********** Listen for save click **********
 // $("#save-button").on("click", function (e) {
